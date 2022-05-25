@@ -22,27 +22,27 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="addDoc-tab" data-bs-toggle="tab" data-bs-target="#addDoc" type="button"
-                    role="tab"  aria-selected="true">Add Document</a>
+                    role="tab" aria-selected="true">Add Document</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="viewData-tab" data-bs-toggle="tab" data-bs-target="#viewData"
-                    type="button" role="tab"  aria-selected="false">View Data</a>
+                <a class="nav-link" id="viewData-tab" data-bs-toggle="tab" data-bs-target="#viewData" type="button"
+                    role="tab" aria-selected="false">View Data</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="preprocessing-tab" data-bs-toggle="tab" data-bs-target="#preprocessing"
-                    type="button" role="tab"  aria-selected="false">Preprocessing</a>
+                    type="button" role="tab" aria-selected="false">Preprocessing</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="naiiveBayes-tab" data-bs-toggle="tab" data-bs-target="#naiiveBayes"
-                    type="button" role="tab" aria-selected="false">Naiive Bayes Algorithm</a>
+                <a class="nav-link" id="naiveBayes-tab" data-bs-toggle="tab" data-bs-target="#naiveBayes" type="button"
+                    role="tab" aria-selected="false">Naive Bayes Algorithm</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="knn-tab" data-bs-toggle="tab" data-bs-target="#knn"
-                    type="button" role="tab"  aria-selected="false">KNN Algorithm</a>
+                <a class="nav-link" id="knn-tab" data-bs-toggle="tab" data-bs-target="#knn" type="button" role="tab"
+                    aria-selected="false">KNN Algorithm</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="finish-tab" data-bs-toggle="tab" data-bs-target="#finish"
-                    type="button" role="tab"  aria-selected="false">Finish</a>
+                <a class="nav-link" id="finish-tab" data-bs-toggle="tab" data-bs-target="#finish" type="button"
+                    role="tab" aria-selected="false">Finish</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -61,24 +61,36 @@
                 <div class="buttonDiv row">
                     <a href="" class="btn btn-outline-primary col-md-4 mx-auto mb-2" id="preprocessingPage">Next</a>
                 </div>
-                <table class="table table-light" id="rawData">
-                   
-                </table>
+
+
+                <h2>Training Set:</h2>
+                <div class="tableDiv table-responsive table-body">
+                    <table class="table table-light table-striped" id="trainingSet">
+                    </table>
+                </div>
+                <br>
+                <br>
+                <h2 class>Test Set:</h2>
+                <div class="tableDiv table-responsive table-body">
+                    <table class="table table-light table-striped" id="testSet">
+                    </table>
+                </div>
+
             </div>
             <div class="tab-pane fade show " id="preprocessing" role="tabpanel" aria-labelledby="preprocessing-tab">
                 <div class="buttonDiv row">
-                    <a href="" class="btn btn-outline-primary col-md-4 mx-auto mb-2" id="naiiveBayesPage">Next</a>
+                    <a href="" class="btn btn-outline-primary col-md-4 mx-auto mb-2" id="naiveBayesPage">Next</a>
                 </div>
                 <table class="table table-striped" id="preprocessedData">
-                   
+
                 </table>
             </div>
-            <div class="tab-pane fade show" id="naiiveBayes" role="tabpanel" aria-labelledby="naiiveBayes-tab">
+            <div class="tab-pane fade show" id="naiveBayes" role="tabpanel" aria-labelledby="naiveBayes-tab">
                 <div class="buttonDiv row">
                     <a href="" class="btn btn-outline-primary col-md-4 mb-2 mx-auto" id="knnPage">Next</a>
                 </div>
             </div>
-            
+
             <div class="tab-pane fade show" id="knn" role="tabpanel" aria-labelledby="knn-tab">
                 <div class="buttonDiv row">
                     <a href="" class="btn btn-outline-primary col-md-4 mb-2 mx-auto" id="finishPage">Next</a>
@@ -86,9 +98,10 @@
                 <div class="buttonDiv row" id="insertData">
 
                 </div>
-                <input type="submit" id="instanceSubmit" class="btn btn-outline-primary col-md-6 mb-2 mx-auto" value="Submit">
+                <input type="submit" id="instanceSubmit" class="btn btn-outline-primary col-md-6 mb-2 mx-auto"
+                    value="Submit">
                 <table class="table table-striped" id="modelTable">
-                   
+
                 </table>
                 <div class="buttonDiv row" id="results">
 

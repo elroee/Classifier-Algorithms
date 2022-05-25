@@ -1,4 +1,4 @@
-var headers, rawDataset, classAttributeIndex, distances=new Array(), ranks=new Array(), inputs=new Array();
+var headers, rawDataset, trainingSet=new Array(), testSet=new Array(), preprocessedSet, classAttributeIndex, distances=new Array(), ranks=new Array(), inputs=new Array();
 
 function csvToArray(str, delimiter = ","){
     headers = str.slice(0,str.indexOf("\n")).split(delimiter);
@@ -14,6 +14,18 @@ function csvToArray(str, delimiter = ","){
           arr.push(temp);
       }
       return arr; 
+}
+
+function splitSet(rawSet)
+{
+    var split = ((rawSet.length)*2)/3;
+    for(var i=0; i<rawSet.length; i++)
+    {
+        if(i<split)
+            trainingSet.push(rawSet[i]);
+        else
+            testSet.push(rawSet[i]);
+    }     
 }
 
 function displayData(table,header,data)
@@ -142,9 +154,15 @@ document.getElementById('viewDataPage').addEventListener('click', function(){
     reader.onload = function(e) {
         const text = e.target.result;
         rawDataset = csvToArray(text);
+        splitSet(rawDataset);
         classAttributeIndex = rawDataset[0].length-1;
+        var table = document.getElementById("trainingSet");
+        displayData(table,headers,trainingSet);
+        table = document.getElementById("testSet");
+        displayData(table,headers,testSet);
     }
     reader.readAsText(input);
+
 })
 document.getElementById('preprocessingPage').addEventListener('click', function(){
     event.preventDefault();
@@ -155,20 +173,20 @@ document.getElementById('preprocessingPage').addEventListener('click', function(
     // var table = document.getElementById("rawData");
     // displayData(table,headers,rawDataset);
 })
-document.getElementById('naiiveBayesPage').addEventListener('click', function(){
+document.getElementById('naiveBayesPage').addEventListener('click', function(){
     event.preventDefault();
     document.getElementById("preprocessing-tab").classList.remove('active');
-    document.getElementById("naiiveBayes-tab").classList.add('active');
+    document.getElementById("naiveBayes-tab").classList.add('active');
     document.getElementById("preprocessing").classList.remove('active');
-    document.getElementById("naiiveBayes").classList.add('active');
+    document.getElementById("naiveBayes").classList.add('active');
     // var table = document.getElementById("rawData");
     // displayData(table,headers,rawDataset);
 })
 document.getElementById('knnPage').addEventListener('click', function(){
     event.preventDefault();
-    document.getElementById("naiiveBayes-tab").classList.remove('active');
+    document.getElementById("naiveBayes-tab").classList.remove('active');
     document.getElementById("knn-tab").classList.add('active');
-    document.getElementById("naiiveBayes").classList.remove('active');
+    document.getElementById("naiveBayes").classList.remove('active');
     document.getElementById("knn").classList.add('active');
 
     var doc = document.getElementById("insertData");
