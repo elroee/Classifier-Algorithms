@@ -1,5 +1,7 @@
+//global variables that are needed in multiple parts of the program
 var headers, rawDataset, trainingSet = new Array(), testSet = new Array(), classAttributeIndex;
 
+//this function converts the accepted csv files into a multidimensional array
 function csvToArray(str, delimiter = ",") {
     headers = str.slice(0, str.indexOf("\n")).split(delimiter);
     const rows = str.slice(str.indexOf("\n") + 1).split("\n");
@@ -15,6 +17,7 @@ function csvToArray(str, delimiter = ",") {
     return arr;
 }
 
+//this function splits the accepted data set into training and test data sets
 function splitSet(rawSet) {
     //var split = ((rawSet.length) * 49) / 50;
     for (var i = 0; i < rawSet.length; i++) {
@@ -29,6 +32,7 @@ function splitSet(rawSet) {
     }
 }
 
+//this function displays given data with header to the specified container
 function displayData(table, header, data) {
     var row = table.insertRow();
     for (var i = 0; i < header.length; i++) {
@@ -44,6 +48,18 @@ function displayData(table, header, data) {
     }
 }
 
+function displayMatrix(table,matrix)
+{
+    for (var i = 0; i < matrix.length; i++) {
+        var row = table.insertRow();
+        for (var j = 0; j < matrix[i].length; j++) {
+            var cell = row.insertCell(j);
+            cell.innerHTML = matrix[i][j];
+        }
+    }
+}
+
+//this function calculates distance between categorical query and an instance in data set
 function calcDistance(query, data) {
     var sim = 0;
     for (var i = 0; i < query.length; i++) {
@@ -53,6 +69,7 @@ function calcDistance(query, data) {
     return Math.sqrt(sim);
 }
 
+//this function returns the top k ranked values for the similarity between query and data set
 function findTopValues(train, distances, k) {
     var top = [...distances];
     top = top.sort();
@@ -70,6 +87,7 @@ function findTopValues(train, distances, k) {
     return final;
 }
 
+//this function finds the class of the query depending on the majority vote of the class values k similar data sets
 function findClass(result, k, cIndex) {
     var classValues = new Array(), count = new Array(), temp, values = new Array();
     for (var i = 0; i < k; i++)
@@ -89,6 +107,7 @@ function findClass(result, k, cIndex) {
     return values[index];
 }
 
+//this function uses the knn algorithm to predict class of test sets
 function knnPredictClass(test, train, k, cIndex) {
     var prediction = new Array(), totDist = new Array();
     for (var i = 0; i < test.length; i++) {
@@ -106,6 +125,7 @@ function knnPredictClass(test, train, k, cIndex) {
     return prediction;
 }
 
+//this function calculates accuracy of prediction by comparing it with actual class values of attributes
 function calcAccuracy(test, prediction, index) {
     var correct = 0, incorrect = 0, accuracy;
     for (var i = 0; i < test.length; i++) {
@@ -118,6 +138,61 @@ function calcAccuracy(test, prediction, index) {
     return accuracy;
 }
 
+function calcConfusionMatrix(test, prediction, index)
+{
+    var dist = distinctize(test)[index];
+    var matrix = new Array();
+    var head = new Array();
+    
+    for(var i=0; i<dist.length; i++)
+    {
+        var temp = new Array();
+        for(var j=0; j<dist.length; j++)
+            temp.push(parseInt(0));
+        matrix.push(temp);
+    }
+    for(var i=0; i<dist.length; i++)
+    {
+        head.push(dist[i]);
+        for(var j=0; j<test.length; j++)
+        {
+            for(var k=0; k<dist.length; k++)
+            {
+                if(test[j][index]==dist[i] && prediction[j]==dist[k])
+                {
+                    matrix[i][k]++;
+                    break;
+                }
+            }
+        }
+    }
+    
+    var confMatrix = new Array();
+    for(var i=0; i<dist.length+1; i++)
+    {
+        var temp = new Array();
+        for(var j=0; j<dist.length+1; j++)
+            temp.push(parseInt(0));
+        confMatrix.push(temp);
+    }
+    for(var i=0; i<dist.length+1; i++)
+    {
+        for(var j=0; j<dist.length+1; j++)
+        {
+            if(i==0 && j==0)
+                confMatrix[i][j]="-";
+            else if(i==0)
+                confMatrix[i][j]=head[j-1];
+            else if(j==0)
+                confMatrix[i][j]=head[i-1];
+            else
+                confMatrix[i][j]=matrix[i-1][j-1];
+        }
+    }
+   return confMatrix;  
+}
+
+//this function returns distinct values of all dataset attributes
 function distinctize(train) {
     var distinct = new Array();
     for (var i = 0; i < train[0].length; i++) {
@@ -132,6 +207,7 @@ function distinctize(train) {
     return distinct;
 }
 
+//this function calculates the probability of an attribute value having a certain class value
 function findProbability(train, distinct, cIndex, distinctClass, distinctClassIndex) {
     var values = new Array(), attrCnt = new Array();
 
@@ -157,6 +233,8 @@ function findProbability(train, distinct, cIndex, distinctClass, distinctClassIn
     //}
     return attrCnt;
 }
+
+//this function calculates the probability of the occurence of a class value in the entire dataset
 function findClassProbability(className, train, cIndex) {
     var cnt = 0;
     train.forEach(function (cl) {
@@ -166,6 +244,7 @@ function findClassProbability(className, train, cIndex) {
     return (cnt / train.length);
 }
 
+//this function uses the naive bayes algorithm to predict class of test data sets
 function naiveBayesPredictClass(test, train, cIndex) {
     var distinct = distinctize(train);
     var classDistinct = distinct[cIndex];
@@ -186,8 +265,7 @@ function naiveBayesPredictClass(test, train, cIndex) {
                     else
                         pr = p[k][ind];
                     mul *= pr;
-                }
-                
+                }             
             }
             res.push(mul);
         }
@@ -247,6 +325,9 @@ document.getElementById('naiveBayesPage').addEventListener('click', function () 
     displayData(table, header, data);
     var accuracy = calcAccuracy(testSet, nbPrediction, classAttributeIndex);
     document.getElementById("naiveBayesAccuracy").innerHTML = "Accuracy = " + accuracy + "% <br> Error Rate = "+(100-accuracy)+ "%";
+    var confusionMatrix = calcConfusionMatrix(testSet,nbPrediction,classAttributeIndex);
+    var container = document.getElementById("naiveBayesConfusionMatrix");
+    displayMatrix(container,confusionMatrix);
 })
 document.getElementById('knnPage').addEventListener('click', function () {
     event.preventDefault();
@@ -255,8 +336,6 @@ document.getElementById('knnPage').addEventListener('click', function () {
     document.getElementById("naiveBayes").classList.remove('active');
     document.getElementById("knn").classList.add('active');
 
-    // var doc = document.getElementById("insertData");
-    // getInstance(doc);
     var k = parseInt(Math.sqrt(trainingSet.length));
     var knnPrediction = knnPredictClass(testSet, trainingSet, k, classAttributeIndex);
     var kVal = document.getElementById("kValue");
@@ -269,6 +348,9 @@ document.getElementById('knnPage').addEventListener('click', function () {
     displayData(table, header, data);
     var accuracy = calcAccuracy(testSet, knnPrediction, classAttributeIndex);
     document.getElementById("knnAccuracy").innerHTML = "Accuracy = " + accuracy + "% <br> Error Rate = "+(100-accuracy)+"%";
+    var confusionMatrix = calcConfusionMatrix(testSet,knnPrediction,classAttributeIndex);
+    var container = document.getElementById("knnConfusionMatrix");
+    displayMatrix(container,confusionMatrix);
 })
 
 document.getElementById('finishPage').addEventListener('click', function () {

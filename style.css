@@ -1,5 +1,5 @@
 .content{
-    padding: 10%;
+    padding: 5%;
 }
 
 #title:hover{
@@ -7,12 +7,20 @@
 }
 
 #title{
-    padding: 20px;
-    font-family: 'Pattaya', sans-serif;
-    font-size: 100px;
-    color: steelblue;
+    /* padding:10px; */
+    font-family: 'Blaka', cursive;
+    /* font-family: 'Pattaya', sans-serif; */
+    font-size: 150px;
+    /* color: steelblue; */
+    color:black;
 }
 .tableDiv{
     height: 500px;
+    overflow-y: auto;
+}
+
+.matrixDiv{
+    width: 50%;
+    height: 200px;
     overflow-y: auto;
 }

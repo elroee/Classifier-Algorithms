@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Blaka&display=swap" rel="stylesheet">
     <title>Classifier</title>
 </head>
 
@@ -82,12 +85,22 @@
                 </div>
                 <h2>Naive Bayes Predicted Class</h2>
                 <div class="tableDiv table-responsive table-body">
-                <table class="table table-striped" id="naiveBayesPrediction">
-                </table>
+                    <table class="table table-striped" id="naiveBayesPrediction">
+                    </table>
                 </div>
                 <div class="buttonDiv row" id="naiveBayesAccuracy">
 
                 </div>
+                <div class="buttonDiv row">
+                    Confusion Matrix:
+                </div>
+
+                <div class="matrixDiv table-responsive table-body">
+
+                    <table class="table table-dark" id="naiveBayesConfusionMatrix">
+                    </table>
+                </div>
+
             </div>
 
             <div class="tab-pane fade show" id="knn" role="tabpanel" aria-labelledby="knn-tab">
@@ -102,11 +115,18 @@
                 <h2>KNN Predicted Class</h2>
                 <div id="kValue"></div>
                 <div class="tableDiv table-responsive table-body">
-                <table class="table table-striped" id="knnPrediction">
-                </table>
+                    <table class="table table-striped" id="knnPrediction">
+                    </table>
                 </div>
                 <div class="buttonDiv row" id="knnAccuracy">
 
+                </div>
+                <div class="buttonDiv row">
+                    Confusion Matrix:
+                </div>
+                <div class="matrixDiv table-responsive table-body">
+                    <table class="table table-striped" id="knnConfusionMatrix">
+                    </table>
                 </div>
             </div>
             <div class="tab-pane fade show" id="finish" role="tabpanel" aria-labelledby="finish-tab">
