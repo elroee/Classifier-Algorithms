@@ -50,9 +50,11 @@
                     <label for="trainingData" class="p-2">Upload Training Data(CSV File): </label>
                     <input type="file" name="form-control rounded" id="trainingData">
                     <br>
-                    <label for="testData" class="p-2">Upload Test Data(CSV File): </label>
+                    <!-- <label for="testData" class="p-2">Upload Test Data(CSV File): </label>
                     <input type="file" name="form-control rounded" id="testData">
-                    <br>
+                    <br> -->
+                    <label for="splitRatio" class="p-2">Split Ratio</label>
+                    <input type="number" name="form-control rounded" id="splitRatio">
                     <br>
                     <div class="buttonDiv row">
                         <a href="" class="btn btn-outline-primary col-md-4 mx-auto" id="viewDataPage">Next</a>
@@ -125,7 +127,7 @@
                     Confusion Matrix:
                 </div>
                 <div class="matrixDiv table-responsive table-body">
-                    <table class="table table-striped" id="knnConfusionMatrix">
+                    <table class="table table-dark" id="knnConfusionMatrix">
                     </table>
                 </div>
             </div>
