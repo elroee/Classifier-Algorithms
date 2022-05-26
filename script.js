@@ -16,12 +16,16 @@ function csvToArray(str, delimiter = ",") {
 }
 
 function splitSet(rawSet) {
-    var split = ((rawSet.length) * 2) / 3;
+    //var split = ((rawSet.length) * 49) / 50;
     for (var i = 0; i < rawSet.length; i++) {
-        if (i < split)
-            trainingSet.push(rawSet[i]);
-        else
+        // if (i < split)
+        //     trainingSet.push(rawSet[i]);
+        // else
+        //     testSet.push(rawSet[i]);
+        if(i%50 == 0)
             testSet.push(rawSet[i]);
+        else
+            trainingSet.push(rawSet[i]);
     }
 }
 
@@ -159,26 +163,12 @@ function findClassProbability(className, train, cIndex) {
         if (cl[cIndex] == className)
             cnt++;
     })
-
     return (cnt / train.length);
 }
 
 function naiveBayesPredictClass(test, train, cIndex) {
     var distinct = distinctize(train);
     var classDistinct = distinct[cIndex];
-    //    var countDistinct = new Array();
-    //    classDistinct.forEach(function(val){
-    //        var cnt = 0;
-    //        train.forEach(function(cl){
-    //            if(cl[cIndex]==val)
-    //             cnt++;
-    //        })
-    //        countDistinct.push(cnt);
-    //    })
-    //var values = findProbability(train,distinct,cIndex,classDistinct,0);
-    //    alert(values);
-    //    alert(findClassProbability(classDistinct[0],train,cIndex));
-    //    alert(findClassProbability(classDistinct[1],train,cIndex));
     var prob = new Array(), cProb = new Array();
     for (var i = 0; i < classDistinct.length; i++)
         cProb.push(findClassProbability(classDistinct[i], train, cIndex));
@@ -190,25 +180,26 @@ function naiveBayesPredictClass(test, train, cIndex) {
             for (var k = 0; k < test[i].length; k++) {
                 if(k!=cIndex)
                 {
-                    var ind = distinct[k].indexOf(test[i][k]);
-                    var pr = p[k][ind];
+                    var ind = distinct[k].indexOf(test[i][k]),pr;
+                    if(ind==-1)
+                        pr = 0;
+                    else
+                        pr = p[k][ind];
                     mul *= pr;
                 }
                 
             }
             res.push(mul);
         }
-        //alert(res);
         var max = 0;
         for (var x = 1; x < res.length; x++)
         {
             if (res[x] > res[max])
                 max = x;
-        }    
+        } 
         prob.push(classDistinct[max]);
-        alert(prob);
     }
-    
+    //alert(prob);
     return prob;
 }
 
@@ -219,16 +210,22 @@ document.getElementById('viewDataPage').addEventListener('click', function () {
     document.getElementById("addDoc").classList.remove('active');
     document.getElementById("viewData").classList.add('active');
 
-    const input = document.getElementById("documentFile").files[0];
+    const input = document.getElementById("trainingData").files[0];
     const reader = new FileReader();
+    var inputs = new Array();
     reader.onload = function (e) {
         const text = e.target.result;
+        //inputs.push(csvToArray(text));
         rawDataset = csvToArray(text);
         splitSet(rawDataset);
         classAttributeIndex = rawDataset[0].length - 1;
         // var table = document.getElementById("trainingSet");
+        var trainCnt = document.getElementById("trainCount");
+        trainCnt.innerHTML+=trainingSet.length+" instances";
         // displayData(table,headers,trainingSet);
         // table = document.getElementById("testSet");
+        var testCnt = document.getElementById("testCount");
+        testCnt.innerHTML+=testSet.length+" instances";
         // displayData(table,headers,testSet);
     }
     reader.readAsText(input);
@@ -249,7 +246,7 @@ document.getElementById('naiveBayesPage').addEventListener('click', function () 
         data.push(testSet[i].concat(nbPrediction[i]));
     displayData(table, header, data);
     var accuracy = calcAccuracy(testSet, nbPrediction, classAttributeIndex);
-    document.getElementById("naiveBayesAccuracy").innerHTML = "Accuracy = " + accuracy + "%";
+    document.getElementById("naiveBayesAccuracy").innerHTML = "Accuracy = " + accuracy + "% <br> Error Rate = "+(100-accuracy)+ "%";
 })
 document.getElementById('knnPage').addEventListener('click', function () {
     event.preventDefault();
@@ -260,7 +257,10 @@ document.getElementById('knnPage').addEventListener('click', function () {
 
     // var doc = document.getElementById("insertData");
     // getInstance(doc);
-    var knnPrediction = knnPredictClass(testSet, trainingSet, 10, classAttributeIndex);
+    var k = parseInt(Math.sqrt(trainingSet.length));
+    var knnPrediction = knnPredictClass(testSet, trainingSet, k, classAttributeIndex);
+    var kVal = document.getElementById("kValue");
+    kVal.innerHTML = "Value for K = Square root of "+trainingSet.length+" = "+k+"<br>";
     var table = document.getElementById("knnPrediction");
     var header = headers.concat("Predicted Class");
     var data = new Array();
@@ -268,7 +268,7 @@ document.getElementById('knnPage').addEventListener('click', function () {
         data.push(testSet[i].concat(knnPrediction[i]));
     displayData(table, header, data);
     var accuracy = calcAccuracy(testSet, knnPrediction, classAttributeIndex);
-    document.getElementById("knnAccuracy").innerHTML = "Accuracy = " + accuracy + "%";
+    document.getElementById("knnAccuracy").innerHTML = "Accuracy = " + accuracy + "% <br> Error Rate = "+(100-accuracy)+"%";
 })
 
 document.getElementById('finishPage').addEventListener('click', function () {
