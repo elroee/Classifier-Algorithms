@@ -7,8 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Blaka&display=swap" rel="stylesheet">
@@ -47,14 +45,11 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show row active" id="addDoc" role="tabpanel" aria-labelledby="addDoc-tab">
                 <form action="" class="form-group mx-auto p-5">
-                    <label for="trainingData" class="p-2">Upload Training Data(CSV File): </label>
-                    <input type="file" name="form-control rounded" id="trainingData">
+                    <label for="trainingData" class="p-2">Upload Dataset(CSV File): </label>
+                    <input type="file" name="form-control rounded" id="dataSet">
                     <br>
-                    <!-- <label for="testData" class="p-2">Upload Test Data(CSV File): </label>
-                    <input type="file" name="form-control rounded" id="testData">
-                    <br> -->
-                    <label for="splitRatio" class="p-2">Split Ratio</label>
-                    <input type="number" name="form-control rounded" id="splitRatio">
+                    <label for="splitRatio" class="p-2">Split Ratio: </label>
+                    <input type="number" name="form-control rounded" id="splitRatio" value="100">
                     <br>
                     <div class="buttonDiv row">
                         <a href="" class="btn btn-outline-primary col-md-4 mx-auto" id="viewDataPage">Next</a>

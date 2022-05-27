@@ -281,8 +281,8 @@ document.getElementById('viewDataPage').addEventListener('click', function () {
     document.getElementById("addDoc").classList.remove('active');
     document.getElementById("viewData").classList.add('active');
 
-    const input = document.getElementById("trainingData").files[0];
-    const splitRatio = document.getElementById("splitRatio").value;
+    const input = document.getElementById("dataSet").files[0];
+    const splitRatio = parseInt(document.getElementById("splitRatio").value);
     const reader = new FileReader();
     var inputs = new Array();
     reader.onload = function (e) {
@@ -291,14 +291,14 @@ document.getElementById('viewDataPage').addEventListener('click', function () {
         rawDataset = csvToArray(text);
         splitSet(rawDataset, parseInt(splitRatio));
         classAttributeIndex = rawDataset[0].length - 1;
-        // var table = document.getElementById("trainingSet");
+        var table = document.getElementById("trainingSet");
         var trainCnt = document.getElementById("trainCount");
         trainCnt.innerHTML += trainingSet.length + " instances";
-        // displayData(table,headers,trainingSet);
-        // table = document.getElementById("testSet");
+        displayData(table,headers,trainingSet);
+        table = document.getElementById("testSet");
         var testCnt = document.getElementById("testCount");
         testCnt.innerHTML += testSet.length + " instances";
-        // displayData(table,headers,testSet);
+        displayData(table,headers,testSet);
     }
     reader.readAsText(input);
 
