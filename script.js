@@ -1,3 +1,20 @@
+/*
+Classifier Algorithms implemented for Winter CS447 Data Mining Course Semester Project
+
+Done By:
+    Bruk Berhane
+    Dagmawi Mekonnen
+    Daniel Degabas
+    Elroe Tadele
+    Ezana Haileselassie
+    Fitsum Mekonen
+
+DRB1802 Section A
+
+Please read the README.txt file in the project folder before running the program.
+*/
+
+
 //global variables that are needed in multiple parts of the program
 var headers, rawDataset, trainingSet = new Array(), testSet = new Array(), classAttributeIndex;
 
