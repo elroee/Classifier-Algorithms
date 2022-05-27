@@ -193,12 +193,15 @@ function distinctize(train) {
     for (var i = 0; i < train[0].length; i++) {
         var dist = new Array();
         for (var j = 0; j < train.length; j++) {
-            if (dist.indexOf(train[j][i]) == -1)
+            if (dist.indexOf(train[j][i]) == -1 && train[j][i]!==undefined)
                 dist.push(train[j][i]);
 
         }
         distinct.push(dist);
     }
+    // var filtered = distinct.filter(val =>{
+    //     return val!==undefined && val!==" ";
+    // });
     return distinct;
 }
 
